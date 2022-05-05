@@ -80,6 +80,7 @@ fetch_insynshandel<-function(pages=0){
   return(output)
 }
 
+
 #' @importFrom tidyverse jsonlite lubridate httr rvest
 fetch_stockprice=function(id){
   
