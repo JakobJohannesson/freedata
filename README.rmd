@@ -1,0 +1,23 @@
+---
+title: "Freedata API"
+author: Jakob Johannesson
+date: ´r Sys.Date()´
+output:
+  md_document:
+  variant: markdown_github
+---
+
+# Hämta data från bland annat Finansinspektionen
+
+Tanka ner data från insynshandeln på FI 
+
+## Installera från GitHub:
+
+För att installera behöver du R och Rstudio. Installera devtools om du inte redan har det. kör sedan install_github kommandot nedan.
+
+```r
+# install.packages("devtools")
+devtools::install_github('jakobjohannesson/freedata')
+```
+
+
