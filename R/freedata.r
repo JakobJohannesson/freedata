@@ -148,8 +148,17 @@ fetch_ratios<-function(id){
     pivot_wider(names_from = name,values_from = value) %>% unnest()
   
   ratios=ratios %>% map_if(str_detect(colnames(ratios),"kpiHistory"), as.numeric)
+  ratios2=ratios %>% map(.f = pluck(1)) %>% enframe() #%>% map(.f = pluck(2)) %>% enframe()
   
-  
+  for(i in 2:8){
+    temp=ratios %>% map(.f = pluck(i)) %>% enframe()
+    ratios2=ratios2 %>% left_join(temp,by="name")
+  }
+  colnames(ratios2)=unlist(ratios2[1,])
+  ratios2=ratios2 %>% slice(-1)
+  year_now=lubridate::today() %>% lubridate::year()
+  kpi=ratios2 %>% slice(5:14) %>% select(-1) %>% mutate_all(.funs = as.numeric) %>% mutate(year=c((year_now-9):year_now))
+  ratios=list(ratios2,kpi)
   return(ratios)
 }
 
