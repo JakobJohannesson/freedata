@@ -101,7 +101,7 @@ fetch_stockprice=function(id){
 
 #' @importFrom tidyverse jsonlite lubridate httr rvest
 fetch_company<-function(id){
-  
+  #id=520
   library(rvest)
   library(tidyverse)
   library(lubridate)
@@ -126,10 +126,12 @@ fetch_company<-function(id){
     tidyr::pivot_wider(names_from = "name",values_from = "value",values_fn = list) %>% 
     unnest(cols = c(kpisHistories.orderedHistoryValues.formattedValue, kpisHistories.orderedHistoryValues.value, 
                     kpisHistories.orderedHistoryValues.period.year, kpisHistories.orderedHistoryValues.period.quarter, 
-                    kpisHistories.orderedHistoryValues.period.date, kpisHistories.orderedHistoryValues.period.label)) %>% 
-    mutate(beskrivning=rep(names$kpisHistories.kpi.name,each=10))
+                    kpisHistories.orderedHistoryValues.period.date, kpisHistories.orderedHistoryValues.period.label))
+  n_row=nrow(df)/10
+  df=df %>% mutate(beskrivning=rep(names$kpisHistories.kpi.name,each=n_row))
   
-  
+  df=df %>% pivot_wider(id_cols = c(kpisHistories.orderedHistoryValues.period.year),names_from = beskrivning,values_from=kpisHistories.orderedHistoryValues.value)
+  df=df %>% mutate_if(is.character,as.numeric)
   return(df)
 }
 
